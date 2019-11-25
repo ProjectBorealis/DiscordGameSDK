@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Discord Game SDK",
+	"Description": "Wrap the Discord Game SDK library.",
+	"Category": "Messaging",
+	"CreatedBy": "Discord",
+	"CreatedByURL": "https://discordapp.com/",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"Modules": [
+		{
+			"Name": "DiscordGameSDK",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"WhitelistPlatforms" :
+			[
+				"Win64",
+				"Linux",
+				"Mac"
+			]
+		}
+	]
+}
