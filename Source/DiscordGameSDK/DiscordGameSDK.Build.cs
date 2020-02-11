@@ -29,6 +29,6 @@ public class DiscordGameSDK : ModuleRules
 		);
 
         string BaseDirectory = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "..", "Source", "ThirdParty", "DiscordGameSDKLibrary"));
-		PublicAdditionalLibraries.Add(Path.Combine(BaseDirectory, "Include"));
+		PublicSystemLibraryPaths.Add(Path.Combine(BaseDirectory, "Include"));
     }
 }
