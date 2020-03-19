@@ -11,24 +11,6 @@ public class DiscordGameSDK : ModuleRules
 
 		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-		//string BaseDirectory = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "..", "ThirdParty", "DiscordGameSDKLibrary"));
-		//PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
-		/*
-		PublicIncludePaths.AddRange(
-			new string[] {
-                "DiscordGameSDK/Public"
-				// ... add public include paths required here ...
-			}
-			);
-				
-		
-		PrivateIncludePaths.AddRange(
-			new string[] {
-                "DiscordGameSDK/Private"
-                //"../../../../../include"
-				// ... add other private include paths required here ...
-			}
-			);*/
 
         PublicDependencyModuleNames.AddRange(
             new string[]
@@ -49,10 +31,7 @@ public class DiscordGameSDK : ModuleRules
 				"DiscordGameSDKLibrary"
             }
 		);
-		//string BaseDirectory = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "..", "ThirdParty", "DiscordGameSDKLibrary"));
         string BaseDirectory = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "..", "Source", "ThirdParty", "DiscordGameSDKLibrary"));
-		//PublicSystemLibraryPaths.Add(Path.Combine(BaseDirectory, "Include"));
-		//PublicAdditionalLibraries.Add( Path.Combine( BaseDirectory, "Include" ) );
 		PublicIncludePaths.Add( Path.Combine( BaseDirectory, "Include" ) );
 		PrivateIncludePaths.Add( Path.Combine( BaseDirectory, "Include" ) );
 

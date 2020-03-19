@@ -23,9 +23,6 @@ namespace UnrealBuildTool.Rules
 				PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 				// Add the import library
-				//PublicSystemLibraryPaths.Add(lib); //4.24
-				///PublicAdditionalLibraries.Add(lib);
-				///PublicAdditionalLibraries.Add( Path.Combine(lib, "discord_game_sdk.dll.lib"));
 				PublicLibraryPaths.Add(lib);
 				PublicAdditionalLibraries.Add( Path.Combine(lib, "discord_game_sdk.dll.lib"));
 
@@ -41,7 +38,6 @@ namespace UnrealBuildTool.Rules
 				PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 				// Add the import library
-				//PublicSystemLibraryPaths.Add(lib);
 				PublicAdditionalLibraries.Add( lib );
 				RuntimeDependencies.Add(Path.Combine(lib, "discord_game_sdk.so"));
 			}
@@ -53,7 +49,6 @@ namespace UnrealBuildTool.Rules
 				PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 				// Add the import library
-				//PublicSystemLibraryPaths.Add(lib);
 				PublicAdditionalLibraries.Add( lib );
 				RuntimeDependencies.Add(Path.Combine(lib, "discord_game_sdk.dylib"));
 			}
