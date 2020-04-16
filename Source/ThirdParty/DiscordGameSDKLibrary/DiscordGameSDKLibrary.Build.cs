@@ -13,7 +13,6 @@ namespace UnrealBuildTool.Rules
             PublicDefinitions.Add("DISCORD_DYNAMIC_LIB=1");
 
             string BaseDirectory = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "..", "ThirdParty", "DiscordGameSDKLibrary"));
-
 			if (Target.Platform == UnrealTargetPlatform.Win64)
 			{
 				string lib = Path.Combine(BaseDirectory, "Win64");
@@ -22,10 +21,11 @@ namespace UnrealBuildTool.Rules
 				PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 				// Add the import library
-				PublicSystemLibraryPaths.Add(lib);
+				PublicLibraryPaths.Add(lib);
+				PublicAdditionalLibraries.Add( Path.Combine(lib, "discord_game_sdk.dll.lib"));
 
 				// Dynamic
-				RuntimeDependencies.Add(Path.Combine(lib, "discord_game_sdk.dll"));
+				RuntimeDependencies.Add( Path.Combine(lib, "discord_game_sdk.dll"));
 				PublicDelayLoadDLLs.Add("discord_game_sdk.dll");
 			}
 			else if (Target.Platform == UnrealTargetPlatform.Linux)
@@ -36,7 +36,8 @@ namespace UnrealBuildTool.Rules
 				PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 				// Add the import library
-				PublicSystemLibraryPaths.Add(lib);
+				PublicLibraryPaths.Add(lib);
+				PublicAdditionalLibraries.Add( Path.Combine(lib, "discord_game_sdk.so") );
 				RuntimeDependencies.Add(Path.Combine(lib, "discord_game_sdk.so"));
 			}
 			else if (Target.Platform == UnrealTargetPlatform.Mac)
@@ -47,7 +48,8 @@ namespace UnrealBuildTool.Rules
 				PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 				// Add the import library
-				PublicSystemLibraryPaths.Add(lib);
+				PublicLibraryPaths.Add(lib);
+				PublicAdditionalLibraries.Add( Path.Combine(lib, "discord_game_sdk.dylib") );
 				RuntimeDependencies.Add(Path.Combine(lib, "discord_game_sdk.dylib"));
 			}
 		}

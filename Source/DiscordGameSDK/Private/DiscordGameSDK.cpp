@@ -15,22 +15,22 @@ void FDiscordGameSDKModule::StartupModule()
 #if !PLATFORM_LINUX
 #if defined(DISCORD_DYNAMIC_LIB)
 	// Get the base directory of this plugin
-	FString BaseDir = IPluginManager::Get().FindPlugin("DiscordRpc")->GetBaseDir();
-	const FString SDKDir = FPaths::Combine(*BaseDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("DiscordRpcLibrary"));
+	FString BaseDir = IPluginManager::Get().FindPlugin("DiscordGameSDK")->GetBaseDir();
+	const FString SDKDir = FPaths::Combine(*BaseDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("DiscordGameSDKLibrary"));
 #if PLATFORM_WINDOWS
-	const FString LibName = TEXT("discord-rpc");
+	const FString LibName = TEXT("discord_game_sdk");
 	const FString LibDir = FPaths::Combine(*SDKDir, TEXT("Win64"));
 	if (!LoadDependency(LibDir, LibName, DiscordGameSDKLibraryHandle))
 	{
-		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordRpc plugin. Plug-in will not be functional."));
+		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordGameSDK plugin. Plug-in will not be functional."));
 		FreeDependency(DiscordGameSDKLibraryHandle);
 	}
 #elif PLATFORM_MAC
-	const FString LibName = TEXT("libdiscord-rpc");
+	const FString LibName = TEXT("discord_game_sdk");
 	const FString LibDir = FPaths::Combine(*SDKDir, TEXT("Mac"));
 	if (!LoadDependency(LibDir, LibName, DiscordRpcLibraryHandle))
 	{
-		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordRpc plugin. Plug-in will not be functional."));
+		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordGameSDK plugin. Plug-in will not be functional."));
 		FreeDependency(DiscordGameSDKLibraryHandle);
 	}
 #endif
