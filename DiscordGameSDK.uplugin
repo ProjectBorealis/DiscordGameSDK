@@ -12,7 +12,6 @@
 	"SupportURL": "",
 	"CanContainContent": true,
 	"IsBetaVersion": false,
-	"EngineVersion": "4.22.0",
 	"EnabledByDefault": false,
 	"Modules": [
 		{
