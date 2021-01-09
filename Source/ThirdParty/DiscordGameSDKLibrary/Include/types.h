@@ -50,6 +50,7 @@ enum class Result {
     InvalidGiftCode = 41,
     PurchaseError = 42,
     TransactionAborted = 43,
+    DrawingInitFailed = 44,
 };
 
 enum class CreateFlags {
@@ -80,6 +81,11 @@ enum class PremiumType {
 
 enum class ImageType {
     User,
+};
+
+enum class ActivityPartyPrivacy {
+    Private = 0,
+    Public = 1,
 };
 
 enum class ActivityType {
@@ -142,6 +148,18 @@ enum class LobbySearchDistance {
     Global,
 };
 
+enum class KeyVariant {
+    Normal,
+    Right,
+    Left,
+};
+
+enum class MouseButton {
+    Left,
+    Middle,
+    Right,
+};
+
 enum class EntitlementType {
     Purchase = 1,
     PremiumSubscription,
@@ -177,6 +195,18 @@ using MetadataKey = char const*;
 using MetadataValue = char const*;
 using NetworkPeerId = std::uint64_t;
 using NetworkChannelId = std::uint8_t;
+#ifdef __APPLE__
+using IDXGISwapChain = void;
+#endif
+#ifdef __linux__
+using IDXGISwapChain = void;
+#endif
+#ifdef __APPLE__
+using MSG = void;
+#endif
+#ifdef __linux__
+using MSG = void;
+#endif
 using Path = char const*;
 using DateTime = char const*;
 
@@ -277,6 +307,8 @@ public:
     char const* GetId() const;
     PartySize& GetSize();
     PartySize const& GetSize() const;
+    void SetPrivacy(ActivityPartyPrivacy privacy);
+    ActivityPartyPrivacy GetPrivacy() const;
 
 private:
     DiscordActivityParty internal_;
@@ -363,6 +395,38 @@ public:
 
 private:
     DiscordLobby internal_;
+};
+
+class ImeUnderline final {
+public:
+    void SetFrom(std::int32_t from);
+    std::int32_t GetFrom() const;
+    void SetTo(std::int32_t to);
+    std::int32_t GetTo() const;
+    void SetColor(std::uint32_t color);
+    std::uint32_t GetColor() const;
+    void SetBackgroundColor(std::uint32_t backgroundColor);
+    std::uint32_t GetBackgroundColor() const;
+    void SetThick(bool thick);
+    bool GetThick() const;
+
+private:
+    DiscordImeUnderline internal_;
+};
+
+class Rect final {
+public:
+    void SetLeft(std::int32_t left);
+    std::int32_t GetLeft() const;
+    void SetTop(std::int32_t top);
+    std::int32_t GetTop() const;
+    void SetRight(std::int32_t right);
+    std::int32_t GetRight() const;
+    void SetBottom(std::int32_t bottom);
+    std::int32_t GetBottom() const;
+
+private:
+    DiscordRect internal_;
 };
 
 class FileStat final {
