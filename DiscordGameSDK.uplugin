@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.1",
 	"FriendlyName": "Discord Game SDK",
 	"Description": "Wrap the Discord Game SDK library.",
 	"Category": "Messaging",
