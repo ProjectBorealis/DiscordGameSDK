@@ -21,7 +21,6 @@ public class DiscordGameSDKLibrary : ModuleRules
 			PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 			// Add the import library
-			PublicLibraryPaths.Add(lib);
 			LinkStaticLibrary(Path.Combine(lib, "discord_game_sdk.dll.lib"));
 
 			// Dynamic
@@ -36,7 +35,6 @@ public class DiscordGameSDKLibrary : ModuleRules
 			PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 			// Add the import library
-			PublicLibraryPaths.Add(lib);
 			LinkStaticLibrary(Path.Combine(lib, "discord_game_sdk.so") );
 			AddDllDependency(Path.Combine(lib, "discord_game_sdk.so"));
 		}
@@ -48,7 +46,6 @@ public class DiscordGameSDKLibrary : ModuleRules
 			PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 			// Add the import library
-			PublicLibraryPaths.Add(lib);
 			LinkStaticLibrary(Path.Combine(lib, "discord_game_sdk.dylib") );
 			AddDllDependency(Path.Combine(lib, "discord_game_sdk.dylib"));
 		}
