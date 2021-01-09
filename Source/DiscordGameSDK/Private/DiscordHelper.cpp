@@ -54,13 +54,19 @@ void UDiscordHelper::BeginDestroy()
 	}
 }
 
-bool UDiscordHelper::RunCallbacks() const
+void UDiscordHelper::Tick(float DeltaTime)
 {
-	if (Core)
-	{
-		return Core->RunCallbacks() == discord::Result::Ok;
-	}
-	return false;
+	Core->RunCallbacks();
+}
+
+bool UDiscordHelper::IsTickable() const
+{
+	return Core != nullptr;
+}
+
+TStatId UDiscordHelper::GetStatId() const
+{
+	RETURN_QUICK_DECLARE_CYCLE_STAT(FAsyncDiscordHelperCallbackHandler, STATGROUP_ThreadPoolAsyncTasks);
 }
 
 int64 UDiscordHelper::GetConnectedUserID()

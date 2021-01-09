@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "types.h"
+#include "Tickable.h"
 #include "Engine/DataTable.h"
 #include "DiscordHelper.generated.h"
 
@@ -27,14 +28,18 @@ struct FDiscordRichPrecisionData : public FTableRowBase
 };
 
 UCLASS()
-class DISCORDGAMESDK_API UDiscordHelper : public UObject
+class DISCORDGAMESDK_API UDiscordHelper : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 
 public:
 	bool Initialize(int64 ClientID, bool bDiscordRequired = false);
 	virtual void BeginDestroy() override;
-	bool RunCallbacks() const;
+
+	// Tickable object interface
+	virtual void Tick(float DeltaTime) override;
+	virtual bool IsTickable() const override;
+	virtual TStatId GetStatId() const override;
 
 	//
 	// Activities
