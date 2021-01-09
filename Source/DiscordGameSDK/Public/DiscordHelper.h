@@ -27,6 +27,10 @@ struct FDiscordRichPrecisionData : public FTableRowBase
 	FString SmallImageTag;
 };
 
+/**
+ * SDK Documentation: https://discordapp.com/developers/docs/game-sdk/sdk-starter-guide#code-primer-unreal-engine-4-cpp
+ * Activity Documentation: https://discordapp.com/developers/docs/game-sdk/activities
+ */
 UCLASS()
 class DISCORDGAMESDK_API UDiscordHelper : public UObject, public FTickableGameObject
 {
@@ -34,6 +38,7 @@ class DISCORDGAMESDK_API UDiscordHelper : public UObject, public FTickableGameOb
 
 public:
 	bool Initialize(int64 ClientID, bool bDiscordRequired = false);
+
 	virtual void BeginDestroy() override;
 
 	// Tickable object interface
@@ -41,16 +46,14 @@ public:
 	virtual bool IsTickable() const override;
 	virtual TStatId GetStatId() const override;
 
-	//
-	// Activities
-	// https://discordapp.com/developers/docs/game-sdk/activities
-	//
-
 	int64 GetConnectedUserID();
 	FString GetConnectedUserName();
+
 	bool UpdatePlayActivity(const FString& State, const FDiscordRichPrecisionData& Data, int64 Timestamp);
 	void ClearPlayActivity();
+
 	void ValidateOrExit(std::function<void(discord::Result)> Callback);
+
 	bool RegisterSteam(uint32 SteamAppID);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUserConnectedSignature, const FString&, UserName, const int64, UserId, const FString&, UserDiscriminator);

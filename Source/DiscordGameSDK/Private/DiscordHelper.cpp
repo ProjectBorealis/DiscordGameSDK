@@ -9,13 +9,33 @@ DEFINE_LOG_CATEGORY_STATIC(LogDiscord, All, All)
 
 bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
 {
-	// https://discordapp.com/developers/docs/game-sdk/sdk-starter-guide#code-primer-unreal-engine-4-cpp
+	UE_LOG(LogDiscord, Log, TEXT("Trying to initialize Discord Instance..."));
+
 	const discord::Result Result = discord::Core::Create(ClientID, bDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core);
 	if (Result != discord::Result::Ok || Core == nullptr)
 	{
 		UE_LOG(LogDiscord, Error, TEXT("Failed to create Discord Instance"));
 		return false;
 	}
+
+	auto LogHook = [](discord::LogLevel DiscordLogLvl, const char* LogText)
+	{
+		if (DiscordLogLvl == discord::LogLevel::Error)
+		{
+			UE_LOG(LogDiscord, Error, TEXT("%s"), ANSI_TO_TCHAR(LogText));
+		}
+		else if (DiscordLogLvl == discord::LogLevel::Warn)
+		{
+			UE_LOG(LogDiscord, Warning, TEXT("%s"), ANSI_TO_TCHAR(LogText));
+		}
+		else
+		{
+			UE_LOG(LogDiscord, Log, TEXT("%s"), ANSI_TO_TCHAR(LogText));
+		}
+	};
+
+	// Note: Log hook is currently not working
+	Core->SetLogHook(discord::LogLevel::Debug, LogHook);
 
 	discord::Event<> OnUserConnectedEvent;
 	auto UserConnectionHandler = [&]()
@@ -46,8 +66,7 @@ void UDiscordHelper::BeginDestroy()
 {
 	Super::BeginDestroy();
 
-	// BUG: If bGotUserConnectedReply is false, SDK crashes. That's an internal issue and there is nothing we can do about
-	if (Core && bGotUserConnectedReply)
+	if (Core)
 	{
 		delete Core;
 		Core = nullptr;
