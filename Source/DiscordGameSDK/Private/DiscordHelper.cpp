@@ -169,6 +169,10 @@ void UDiscordHelper::ValidateOrExit(std::function<void(discord::Result)> Callbac
 	{
 		Core->ApplicationManager().ValidateOrExit(Callback);
 	}
+	else
+	{
+		Callback(discord::Result::InternalError);
+	}
 }
 
 bool UDiscordHelper::RegisterSteam(uint32 SteamAppID)
