@@ -11,7 +11,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogDiscord, All, All)
 static discord::Core* Core = nullptr;
 
 
-bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
+bool UDiscordHelper::InitializeDiscordInstance(int64 ClientID, bool bDiscordRequired)
 {
 	// https://discordapp.com/developers/docs/game-sdk/sdk-starter-guide#code-primer-unreal-engine-4-cpp
 	const discord::Result Result = discord::Core::Create(ClientID, bDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core);
@@ -30,7 +30,7 @@ bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
 			const discord::Result UserResult = Core->UserManager().GetCurrentUser(&CurrentUser);
 			if (UserResult == discord::Result::Ok)
 			{
-				OnUserConnected.Broadcast(CurrentUser.GetUsername(), CurrentUser.GetId(), CurrentUser.GetDiscriminator());
+				OnUserConnected.Broadcast(UTF8_TO_TCHAR(CurrentUser.GetUsername()), CurrentUser.GetId(), CurrentUser.GetDiscriminator());
 			}
 		}
 	};
@@ -39,6 +39,14 @@ bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
 	Core->UserManager().OnCurrentUserUpdate = OnUserConnectedEvent;
 
 	return true;
+}
+
+void UDiscordHelper::DestroyDiscordInstance()
+{
+	if (Core)
+	{
+		delete Core;
+	}
 }
 
 bool UDiscordHelper::RunCallbacks() const

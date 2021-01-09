@@ -13,7 +13,8 @@ class DISCORDGAMESDK_API UDiscordHelper : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
-	bool Initialize(int64 ClientID, bool bDiscordRequired = false);
+	bool InitializeDiscordInstance(int64 ClientID, bool bDiscordRequired = false);
+	void DestroyDiscordInstance();
 	bool RunCallbacks() const;
 
 	//
