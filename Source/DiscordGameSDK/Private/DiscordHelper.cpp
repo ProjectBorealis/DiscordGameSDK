@@ -13,7 +13,7 @@ bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
 	const discord::Result Result = discord::Core::Create(ClientID, bDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core);
 	if (Result != discord::Result::Ok || Core == nullptr)
 	{
-		UE_LOG(LogDiscord, Error, TEXT("Failed to create Discord Core"));
+		UE_LOG(LogDiscord, Error, TEXT("Failed to create Discord Instance"));
 		return false;
 	}
 
@@ -29,7 +29,10 @@ bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
 			if (UserResult == discord::Result::Ok)
 			{
 				bGotUserConnectedReply = true;
-				OnUserConnected.Broadcast(UTF8_TO_TCHAR(CurrentUser.GetUsername()), CurrentUser.GetId(), CurrentUser.GetDiscriminator());
+				const auto UserName = UTF8_TO_TCHAR(CurrentUser.GetUsername());
+				const auto UserDiscriminator = UTF8_TO_TCHAR(CurrentUser.GetDiscriminator());
+				OnUserConnected.Broadcast(UserName, CurrentUser.GetId(), UserDiscriminator);
+				UE_LOG(LogDiscord, Log, TEXT("Successfully connected to Discord as %s#%s"), UserName, UserDiscriminator);
 			}
 		}
 	};
@@ -95,23 +98,24 @@ bool UDiscordHelper::UpdatePlayActivity(const FString& Details, const FString& S
 		return false;
 	}
 
-	discord::Activity activity{};
-	activity.SetType(discord::ActivityType::Playing);
-	activity.SetState(TCHAR_TO_ANSI(*State));
-	activity.SetDetails(TCHAR_TO_ANSI(*Details));
-	activity.GetAssets().SetLargeImage("pretty-cover");
-	activity.GetAssets().SetSmallImage("logo-sq-b");
-	discord::ActivityTimestamps& Timestamps = activity.GetTimestamps();
+	discord::Activity Activity{};
+	Activity.SetType(discord::ActivityType::Playing);
+	Activity.SetState(TCHAR_TO_ANSI(*State));
+	Activity.SetDetails(TCHAR_TO_ANSI(*Details));
+	Activity.GetAssets().SetLargeImage("pretty-cover");
+	Activity.GetAssets().SetSmallImage("logo-sq-b");
+	discord::ActivityTimestamps& Timestamps = Activity.GetTimestamps();
 	Timestamps.SetStart(Timestamp);
-	Core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
+	Core->ActivityManager().UpdateActivity(Activity, [State](discord::Result Result)
 	{
-		if (result != discord::Result::Ok)
+		if (Result != discord::Result::Ok)
 		{
-			UE_LOG(LogDiscord, Log, TEXT("Discord Activity Fail"));
-			return;
+			UE_LOG(LogDiscord, Log, TEXT("Discord activity change request is failed"));
 		}
-
-		UE_LOG(LogDiscord, Log, TEXT("Discord Activity Set"));
+		else
+		{
+			UE_LOG(LogDiscord, Log, TEXT("Discord activity state is changed as %s"), *State);
+		}
 	});
 	return true;
 }
@@ -120,7 +124,17 @@ void UDiscordHelper::ClearPlayActivity()
 {
 	if (Core)
 	{
-		Core->ActivityManager().ClearActivity([](discord::Result){});
+		Core->ActivityManager().ClearActivity([](discord::Result Result)
+		{
+			if (Result != discord::Result::Ok)
+			{
+                UE_LOG(LogDiscord, Log, TEXT("Discord activity clear request is failed"));
+            }
+			else
+			{
+				UE_LOG(LogDiscord, Log, TEXT("Discord activity is cleared"));
+			}
+		});
 	}
 }
 
