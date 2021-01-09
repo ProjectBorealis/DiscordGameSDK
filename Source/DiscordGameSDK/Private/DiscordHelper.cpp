@@ -91,7 +91,7 @@ FString UDiscordHelper::GetConnectedUserName()
 	return "Unknown Discord User";
 }
 
-bool UDiscordHelper::UpdatePlayActivity(const FString& Details, const FString& State, int64 Timestamp)
+bool UDiscordHelper::UpdatePlayActivity(const FString& State, const FDiscordRichPrecisionData& Data, int64 Timestamp)
 {
 	if (!Core)
 	{
@@ -101,9 +101,9 @@ bool UDiscordHelper::UpdatePlayActivity(const FString& Details, const FString& S
 	discord::Activity Activity{};
 	Activity.SetType(discord::ActivityType::Playing);
 	Activity.SetState(TCHAR_TO_ANSI(*State));
-	Activity.SetDetails(TCHAR_TO_ANSI(*Details));
-	Activity.GetAssets().SetLargeImage("pretty-cover");
-	Activity.GetAssets().SetSmallImage("logo-sq-b");
+	Activity.SetDetails(TCHAR_TO_ANSI(*Data.Details.ToString()));
+	Activity.GetAssets().SetLargeImage(TCHAR_TO_ANSI(*Data.LargeImageTag));
+	Activity.GetAssets().SetSmallImage(TCHAR_TO_ANSI(*Data.SmallImageTag));
 	discord::ActivityTimestamps& Timestamps = Activity.GetTimestamps();
 	Timestamps.SetStart(Timestamp);
 	Core->ActivityManager().UpdateActivity(Activity, [State](discord::Result Result)

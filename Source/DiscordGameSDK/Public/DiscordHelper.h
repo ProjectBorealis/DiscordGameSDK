@@ -3,13 +3,28 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "types.h"
+#include "Engine/DataTable.h"
 #include "DiscordHelper.generated.h"
 
 namespace discord {
 class Core;
 }
+
+USTRUCT(BlueprintType)
+struct FDiscordRichPrecisionData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FText Details;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString LargeImageTag;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString SmallImageTag;
+};
 
 UCLASS()
 class DISCORDGAMESDK_API UDiscordHelper : public UObject
@@ -28,7 +43,7 @@ public:
 
 	int64 GetConnectedUserID();
 	FString GetConnectedUserName();
-	bool UpdatePlayActivity(const FString& Details, const FString& State, int64 Timestamp);
+	bool UpdatePlayActivity(const FString& State, const FDiscordRichPrecisionData& Data, int64 Timestamp);
 	void ClearPlayActivity();
 	void ValidateOrExit(std::function<void(discord::Result)> Callback);
 	bool RegisterSteam(uint32 SteamAppID);
