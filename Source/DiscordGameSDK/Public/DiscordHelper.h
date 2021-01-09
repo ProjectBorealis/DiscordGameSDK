@@ -5,16 +5,20 @@
 #include "CoreMinimal.h"
 
 #include "types.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
 #include "DiscordHelper.generated.h"
 
+namespace discord {
+class Core;
+}
+
 UCLASS()
-class DISCORDGAMESDK_API UDiscordHelper : public UBlueprintFunctionLibrary
+class DISCORDGAMESDK_API UDiscordHelper : public UObject
 {
 	GENERATED_BODY()
+
 public:
-	bool InitializeDiscordInstance(int64 ClientID, bool bDiscordRequired = false);
-	void DestroyDiscordInstance();
+	bool Initialize(int64 ClientID, bool bDiscordRequired = false);
+	virtual void BeginDestroy() override;
 	bool RunCallbacks() const;
 
 	//
@@ -22,14 +26,18 @@ public:
 	// https://discordapp.com/developers/docs/game-sdk/activities
 	//
 
-	static int64 GetConnectedUserID();
-	static FString GetConnectedUserName();
-	static bool UpdatePlayActivity(const FString& Details, const FString& State, int64 Timestamp);
-	static void ClearPlayActivity();
-	static void ValidateOrExit(std::function<void(discord::Result)> Callback);
-	static bool RegisterSteam(uint32 SteamAppID);
+	int64 GetConnectedUserID();
+	FString GetConnectedUserName();
+	bool UpdatePlayActivity(const FString& Details, const FString& State, int64 Timestamp);
+	void ClearPlayActivity();
+	void ValidateOrExit(std::function<void(discord::Result)> Callback);
+	bool RegisterSteam(uint32 SteamAppID);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUserConnectedSignature, const FString&, UserName, const int64, UserId, const FString&, UserDiscriminator);
 	UPROPERTY(BlueprintAssignable)
 	FOnUserConnectedSignature OnUserConnected;
+
+private:
+	discord::Core* Core = nullptr;
+	bool bGotUserConnectedReply = false;
 };

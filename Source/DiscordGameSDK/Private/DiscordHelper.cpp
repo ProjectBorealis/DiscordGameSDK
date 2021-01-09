@@ -7,11 +7,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiscord, All, All)
 
-
-static discord::Core* Core = nullptr;
-
-
-bool UDiscordHelper::InitializeDiscordInstance(int64 ClientID, bool bDiscordRequired)
+bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
 {
 	// https://discordapp.com/developers/docs/game-sdk/sdk-starter-guide#code-primer-unreal-engine-4-cpp
 	const discord::Result Result = discord::Core::Create(ClientID, bDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core);
@@ -26,26 +22,32 @@ bool UDiscordHelper::InitializeDiscordInstance(int64 ClientID, bool bDiscordRequ
 	{
 		if (Core)
 		{
+			// BUG: After 3 consecutive connect/disconnect requests, discord stops giving reply to user connection request.
+			// Only solution is restarting the Discord. Probably they have a rate limiting.
 			discord::User CurrentUser;
 			const discord::Result UserResult = Core->UserManager().GetCurrentUser(&CurrentUser);
 			if (UserResult == discord::Result::Ok)
 			{
+				bGotUserConnectedReply = true;
 				OnUserConnected.Broadcast(UTF8_TO_TCHAR(CurrentUser.GetUsername()), CurrentUser.GetId(), CurrentUser.GetDiscriminator());
 			}
 		}
 	};
-
 	OnUserConnectedEvent.Connect(UserConnectionHandler);
 	Core->UserManager().OnCurrentUserUpdate = OnUserConnectedEvent;
 
 	return true;
 }
 
-void UDiscordHelper::DestroyDiscordInstance()
+void UDiscordHelper::BeginDestroy()
 {
-	if (Core)
+	Super::BeginDestroy();
+
+	// BUG: If bGotUserConnectedReply is false, SDK crashes. That's an internal issue and there is nothing we can do about
+	if (Core && bGotUserConnectedReply)
 	{
 		delete Core;
+		Core = nullptr;
 	}
 }
 
