@@ -60,7 +60,6 @@ public class DiscordGameSDKLibrary : ModuleRules
 
 		// Found a library; add it to the dependencies list
 		PublicAdditionalLibraries.Add(full_library_path);
-		Trace("Added static library: {0}", full_library_path);
 	}
 
 
@@ -73,22 +72,14 @@ public class DiscordGameSDKLibrary : ModuleRules
 
 		// Found a library; add it to the dependencies list
 		RuntimeDependencies.Add(full_dll_path);
-		Trace("Added runtime dll library: {0}", full_dll_path);
 	}
 
 	/**
-		* Print out a build message
-		* Why error? Well, the UE masks all other errors. *shrug*
-		*/
+	 * Print out a build message
+	 */
 	private void Trace(string msg)
 	{
 		Log.TraceInformation("DiscordGameSDKLibrary: " + msg);
-	}
-
-	/** Trace helper */
-	private void Trace(string format, params object[] args)
-	{
-		Trace(string.Format(format, args));
 	}
 
 	private void Fail(string message)
@@ -96,5 +87,4 @@ public class DiscordGameSDKLibrary : ModuleRules
 		Trace(message);
 		throw new Exception(message);
 	}
-
 }
