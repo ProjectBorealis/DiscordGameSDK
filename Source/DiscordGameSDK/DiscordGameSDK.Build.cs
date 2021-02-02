@@ -9,7 +9,6 @@ public class DiscordGameSDK : ModuleRules
 {
 	public DiscordGameSDK(ReadOnlyTargetRules Target) : base(Target)
 	{
-		Console.WriteLine("Using DiscordGameSDK.Build.cs");
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		bEnforceIWYU = true;
 		PublicDefinitions.Add("DISCORD_DYNAMIC_LIB=1");
