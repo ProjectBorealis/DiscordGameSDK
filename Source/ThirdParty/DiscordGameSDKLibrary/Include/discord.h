@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "core.h"
+#include "discord_core.h"
 #include "application_manager.h"
 #include "user_manager.h"
 #include "image_manager.h"

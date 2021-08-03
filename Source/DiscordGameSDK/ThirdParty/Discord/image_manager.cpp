@@ -4,7 +4,7 @@
 
 #include "image_manager.h"
 
-#include "core.h"
+#include "discord_core.h"
 
 #include <cstring>
 #include <memory>

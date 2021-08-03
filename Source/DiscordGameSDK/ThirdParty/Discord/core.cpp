@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "core.h"
+#include "discord_core.h"
 
 #include <cstring>
 #include <memory>
