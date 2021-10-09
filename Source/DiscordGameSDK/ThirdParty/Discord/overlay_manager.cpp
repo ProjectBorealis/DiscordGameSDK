@@ -13,7 +13,7 @@ namespace discord {
 
 class OverlayEvents final {
 public:
-    static void OnToggle(void* callbackData, bool locked)
+    static void DISCORD_CALLBACK OnToggle(void* callbackData, bool locked)
     {
         auto* core = reinterpret_cast<Core*>(callbackData);
         if (!core) {
