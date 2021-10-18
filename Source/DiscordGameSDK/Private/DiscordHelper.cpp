@@ -49,10 +49,11 @@ bool UDiscordHelper::Initialize(int64 ClientID, bool bDiscordRequired)
 			if (UserResult == discord::Result::Ok)
 			{
 				bGotUserConnectedReply = true;
-				const auto UserName = UTF8_TO_TCHAR(CurrentUser.GetUsername());
-				const auto UserDiscriminator = UTF8_TO_TCHAR(CurrentUser.GetDiscriminator());
-				OnUserConnected.Broadcast(UserName, CurrentUser.GetId(), UserDiscriminator);
-				UE_LOG(LogDiscord, Log, TEXT("Successfully connected to Discord as %s#%s"), UserName, UserDiscriminator);
+				OnUserConnected.Broadcast(UTF8_TO_TCHAR(CurrentUser.GetUsername()), CurrentUser.GetId(), UTF8_TO_TCHAR(CurrentUser.GetDiscriminator()));
+				UE_LOG(LogDiscord, Log, TEXT("Successfully connected to Discord as %s#%s"),
+					UTF8_TO_TCHAR(CurrentUser.GetUsername()),
+					UTF8_TO_TCHAR(CurrentUser.GetDiscriminator())
+				);
 			}
 		}
 	};
@@ -132,16 +133,16 @@ bool UDiscordHelper::UpdatePlayActivity(const FString& State, const FDiscordRich
 	discord::ActivityTimestamps& Timestamps = Activity.GetTimestamps();
 	Timestamps.SetStart(Timestamp);
 	Core->ActivityManager().UpdateActivity(Activity, [State](discord::Result Result)
-	{
-		if (Result != discord::Result::Ok)
 		{
-			UE_LOG(LogDiscord, Log, TEXT("Discord activity change request is failed"));
-		}
-		else
-		{
-			UE_LOG(LogDiscord, Log, TEXT("Discord activity state is changed as %s"), *State);
-		}
-	});
+			if (Result != discord::Result::Ok)
+			{
+				UE_LOG(LogDiscord, Log, TEXT("Discord activity change request is failed"));
+			}
+			else
+			{
+				UE_LOG(LogDiscord, Log, TEXT("Discord activity state is changed as %s"), *State);
+			}
+		});
 	return true;
 }
 
@@ -150,16 +151,16 @@ void UDiscordHelper::ClearPlayActivity()
 	if (Core)
 	{
 		Core->ActivityManager().ClearActivity([](discord::Result Result)
-		{
-			if (Result != discord::Result::Ok)
 			{
-                UE_LOG(LogDiscord, Log, TEXT("Discord activity clear request is failed"));
-            }
-			else
-			{
-				UE_LOG(LogDiscord, Log, TEXT("Discord activity is cleared"));
-			}
-		});
+				if (Result != discord::Result::Ok)
+				{
+					UE_LOG(LogDiscord, Log, TEXT("Discord activity clear request is failed"));
+				}
+				else
+				{
+					UE_LOG(LogDiscord, Log, TEXT("Discord activity is cleared"));
+				}
+			});
 	}
 }
 
