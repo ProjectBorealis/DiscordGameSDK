@@ -35,8 +35,8 @@ public class DiscordGameSDKLibrary : ModuleRules
 			PublicIncludePaths.Add(Path.Combine(BaseDirectory, "Include"));
 
 			// Add the import library
-			LinkStaticLibrary(Path.Combine(lib, "discord_game_sdk.so") );
-			AddDllDependency(Path.Combine(lib, "discord_game_sdk.so"));
+			LinkStaticLibrary(Path.Combine(lib, "libdiscord_game_sdk.so") );
+			AddDllDependency(Path.Combine(lib, "libdiscord_game_sdk.so"));
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
