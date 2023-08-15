@@ -3,14 +3,12 @@
 using System;
 using System.IO;
 using UnrealBuildTool;
-using Tools.DotNETCommon;
 
 public class DiscordGameSDK : ModuleRules
 {
 	public DiscordGameSDK(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-		bEnforceIWYU = true;
 		PublicDefinitions.Add("DISCORD_DYNAMIC_LIB=1");
 
 		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));

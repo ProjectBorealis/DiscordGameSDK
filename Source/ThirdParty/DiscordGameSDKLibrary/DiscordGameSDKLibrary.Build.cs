@@ -3,7 +3,8 @@
 using System;
 using System.IO;
 using UnrealBuildTool;
-using Tools.DotNETCommon;
+using EpicGames.Core;
+using Microsoft.Extensions.Logging;
 
 public class DiscordGameSDKLibrary : ModuleRules
 {
@@ -79,7 +80,7 @@ public class DiscordGameSDKLibrary : ModuleRules
 	 */
 	private void Trace(string msg)
 	{
-		Log.TraceInformation("DiscordGameSDKLibrary: " + msg);
+		Log.Logger.LogInformation("DiscordGameSDKLibrary: {msg}", msg);
 	}
 
 	private void Fail(string message)
