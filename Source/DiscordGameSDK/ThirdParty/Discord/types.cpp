@@ -2,6 +2,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
+void str_cpy(char* dest, const char* src, size_t size) {
+#if defined(_MSC_VER)
+	strncpy_s(dest, size, src, size);
+#else
+	strncpy(dest, src, size);
+#endif
+	dest[size - 1] = '\0';
+}
+
 #include "types.h"
 
 #include <cstring>
@@ -21,8 +30,7 @@ UserId User::GetId() const
 
 void User::SetUsername(char const* username)
 {
-    strncpy_s(internal_.username, 256, username, 256);
-    internal_.username[256 - 1] = '\0';
+    str_cpy(internal_.username, username, 256);
 }
 
 char const* User::GetUsername() const
@@ -32,8 +40,7 @@ char const* User::GetUsername() const
 
 void User::SetDiscriminator(char const* discriminator)
 {
-    strncpy_s(internal_.discriminator, 8, discriminator, 8);
-    internal_.discriminator[8 - 1] = '\0';
+    str_cpy(internal_.discriminator, discriminator, 8);
 }
 
 char const* User::GetDiscriminator() const
@@ -43,8 +50,7 @@ char const* User::GetDiscriminator() const
 
 void User::SetAvatar(char const* avatar)
 {
-    strncpy_s(internal_.avatar, 128, avatar, 128);
-    internal_.avatar[128 - 1] = '\0';
+    str_cpy(internal_.avatar, avatar, 128);
 }
 
 char const* User::GetAvatar() const
@@ -64,8 +70,7 @@ bool User::GetBot() const
 
 void OAuth2Token::SetAccessToken(char const* accessToken)
 {
-    strncpy_s(internal_.access_token, 128, accessToken, 128);
-    internal_.access_token[128 - 1] = '\0';
+    str_cpy(internal_.access_token, accessToken, 128);
 }
 
 char const* OAuth2Token::GetAccessToken() const
@@ -75,8 +80,7 @@ char const* OAuth2Token::GetAccessToken() const
 
 void OAuth2Token::SetScopes(char const* scopes)
 {
-    strncpy_s(internal_.scopes, 1024, scopes, 1024);
-    internal_.scopes[1024 - 1] = '\0';
+    str_cpy(internal_.scopes, scopes, 1024);
 }
 
 char const* OAuth2Token::GetScopes() const
@@ -166,8 +170,7 @@ Timestamp ActivityTimestamps::GetEnd() const
 
 void ActivityAssets::SetLargeImage(char const* largeImage)
 {
-    strncpy_s(internal_.large_image, 128, largeImage, 128);
-    internal_.large_image[128 - 1] = '\0';
+    str_cpy(internal_.large_image, largeImage, 128);
 }
 
 char const* ActivityAssets::GetLargeImage() const
@@ -177,8 +180,7 @@ char const* ActivityAssets::GetLargeImage() const
 
 void ActivityAssets::SetLargeText(char const* largeText)
 {
-    strncpy_s(internal_.large_text, 128, largeText, 128);
-    internal_.large_text[128 - 1] = '\0';
+    str_cpy(internal_.large_text, largeText, 128);
 }
 
 char const* ActivityAssets::GetLargeText() const
@@ -188,8 +190,7 @@ char const* ActivityAssets::GetLargeText() const
 
 void ActivityAssets::SetSmallImage(char const* smallImage)
 {
-    strncpy_s(internal_.small_image, 128, smallImage, 128);
-    internal_.small_image[128 - 1] = '\0';
+    str_cpy(internal_.small_image, smallImage, 128);
 }
 
 char const* ActivityAssets::GetSmallImage() const
@@ -199,8 +200,7 @@ char const* ActivityAssets::GetSmallImage() const
 
 void ActivityAssets::SetSmallText(char const* smallText)
 {
-    strncpy_s(internal_.small_text, 128, smallText, 128);
-    internal_.small_text[128 - 1] = '\0';
+    str_cpy(internal_.small_text, smallText, 128);
 }
 
 char const* ActivityAssets::GetSmallText() const
@@ -230,8 +230,7 @@ std::int32_t PartySize::GetMaxSize() const
 
 void ActivityParty::SetId(char const* id)
 {
-    strncpy_s(internal_.id, 128, id, 128);
-    internal_.id[128 - 1] = '\0';
+    str_cpy(internal_.id, id, 128);
 }
 
 char const* ActivityParty::GetId() const
@@ -261,8 +260,7 @@ ActivityPartyPrivacy ActivityParty::GetPrivacy() const
 
 void ActivitySecrets::SetMatch(char const* match)
 {
-    strncpy_s(internal_.match, 128, match, 128);
-    internal_.match[128 - 1] = '\0';
+    str_cpy(internal_.match, match, 128);
 }
 
 char const* ActivitySecrets::GetMatch() const
@@ -272,8 +270,7 @@ char const* ActivitySecrets::GetMatch() const
 
 void ActivitySecrets::SetJoin(char const* join)
 {
-    strncpy_s(internal_.join, 128, join, 128);
-    internal_.join[128 - 1] = '\0';
+    str_cpy(internal_.join, join, 128);
 }
 
 char const* ActivitySecrets::GetJoin() const
@@ -283,8 +280,7 @@ char const* ActivitySecrets::GetJoin() const
 
 void ActivitySecrets::SetSpectate(char const* spectate)
 {
-    strncpy_s(internal_.spectate, 128, spectate, 128);
-    internal_.spectate[128 - 1] = '\0';
+    str_cpy(internal_.spectate, spectate, 128);
 }
 
 char const* ActivitySecrets::GetSpectate() const
@@ -314,8 +310,7 @@ std::int64_t Activity::GetApplicationId() const
 
 void Activity::SetName(char const* name)
 {
-    strncpy_s(internal_.name, 128, name, 128);
-    internal_.name[128 - 1] = '\0';
+    str_cpy(internal_.name, name, 128);
 }
 
 char const* Activity::GetName() const
@@ -325,8 +320,7 @@ char const* Activity::GetName() const
 
 void Activity::SetState(char const* state)
 {
-    strncpy_s(internal_.state, 128, state, 128);
-    internal_.state[128 - 1] = '\0';
+    str_cpy(internal_.state, state, 128);
 }
 
 char const* Activity::GetState() const
@@ -336,8 +330,7 @@ char const* Activity::GetState() const
 
 void Activity::SetDetails(char const* details)
 {
-    strncpy_s(internal_.details, 128, details, 128);
-    internal_.details[128 - 1] = '\0';
+    str_cpy(internal_.details, details, 128);
 }
 
 char const* Activity::GetDetails() const
@@ -477,8 +470,7 @@ UserId Lobby::GetOwnerId() const
 
 void Lobby::SetSecret(LobbySecret secret)
 {
-    strncpy_s(internal_.secret, 128, secret, 128);
-    internal_.secret[128 - 1] = '\0';
+    str_cpy(internal_.secret, secret, 128);
 }
 
 LobbySecret Lobby::GetSecret() const
@@ -598,8 +590,7 @@ std::int32_t Rect::GetBottom() const
 
 void FileStat::SetFilename(char const* filename)
 {
-    strncpy_s(internal_.filename, 260, filename, 260);
-    internal_.filename[260 - 1] = '\0';
+    str_cpy(internal_.filename, filename, 260);
 }
 
 char const* FileStat::GetFilename() const
@@ -669,8 +660,7 @@ std::uint32_t SkuPrice::GetAmount() const
 
 void SkuPrice::SetCurrency(char const* currency)
 {
-    strncpy_s(internal_.currency, 16, currency, 16);
-    internal_.currency[16 - 1] = '\0';
+    str_cpy(internal_.currency, currency, 16);
 }
 
 char const* SkuPrice::GetCurrency() const
@@ -700,8 +690,7 @@ SkuType Sku::GetType() const
 
 void Sku::SetName(char const* name)
 {
-    strncpy_s(internal_.name, 256, name, 256);
-    internal_.name[256 - 1] = '\0';
+    str_cpy(internal_.name, name, 256);
 }
 
 char const* Sku::GetName() const
@@ -731,8 +720,7 @@ InputModeType InputMode::GetType() const
 
 void InputMode::SetShortcut(char const* shortcut)
 {
-    strncpy_s(internal_.shortcut, 256, shortcut, 256);
-    internal_.shortcut[256 - 1] = '\0';
+    str_cpy(internal_.shortcut, shortcut, 256);
 }
 
 char const* InputMode::GetShortcut() const
@@ -772,8 +760,7 @@ std::uint8_t UserAchievement::GetPercentComplete() const
 
 void UserAchievement::SetUnlockedAt(DateTime unlockedAt)
 {
-    strncpy_s(internal_.unlocked_at, 64, unlockedAt, 64);
-    internal_.unlocked_at[64 - 1] = '\0';
+    str_cpy(internal_.unlocked_at, unlockedAt, 64);
 }
 
 DateTime UserAchievement::GetUnlockedAt() const
